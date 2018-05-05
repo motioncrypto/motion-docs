@@ -33,7 +33,7 @@ if [[ "$key" == "" ]]; then
     echo "WARNING: No private key entered, exiting!!!"
     echo && exit
 fi
-read -e -p "VPS Server IP Address and Masternode Port 7979 : " ip
+read -e -p "VPS Server IP Address and Masternode Port 13385 : " ip
 echo && echo "Pressing ENTER will use the default value for the next prompts."
 echo && sleep 3
 read -e -p "Add swap space? (Recommended) [Y/n] : " add_swap
@@ -212,5 +212,5 @@ cd ~
 
 # cd to motion-cli for final, no real need to run cli with commands as service when you can just cd there
 echo && echo "Motion Masternode Setup Complete!"
-cd /root/motion/src
-echo && echo "Please let the node sync, run motion-cli -getblockcount in a few minutes"
+
+echo && echo "Please let the node sync, run /root/motion/src/motion-cli -getblockcount in a few minutes"
