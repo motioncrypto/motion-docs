@@ -25,11 +25,16 @@ Click Receive, then click Request and put your Label such as “MN1”
 Copy the Address and Send EXACTLY 1000 MTN to this Address
 Go to the tab at the bottom that says "Tools"
 Go to the tab at the top that says "Console"
-Wait for 15 confirmations, then run following command: masternode outputs
-You should see one line corresponding to the transaction id (tx_id) of your 1000 coins with a digit identifier (digit). Save these two strings in a text file. Example:
+
+Wait for 15 confirmations, then run following command:
+masternode outputs
+
+You should see one line corresponding to the transaction id (tx_id) of your 1000 coins with a digit identifier (digit). Save these two strings in a text file.
+Example:
 {
   "6a66ad6011ee363c2d97da0b55b73584fef376dc0ef43137b478aa73b4b906b0": "0"
 }
+
 Note that if you get more than 1 line, it’s because you made multiple 1000 coins transactions, with the tx_id and digit associated.
 Run the following command:
 
