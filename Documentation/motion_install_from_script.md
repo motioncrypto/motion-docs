@@ -28,6 +28,7 @@ This is your masternode private key, record it to text file, keep it safe, do no
 Next, you have to go to the data directory of your wallet 
 Go to wallet settings=> and click “Open masternode configuration file”
 You should see 2 lines both with a # to comment them out.
+
 Please make a new line and add:
 MN1 (YOUR VPS IP):7979 masternodeprivkey tx_id digit
 
@@ -47,7 +48,7 @@ apt-get update;apt-get upgrade; apt-get install nano software-properties-common 
 
 Now Copy command into the VPS command line and hit enter:
 
-wget https://raw.githubusercontent.com/motioncrypto/motion/master/contrib/masternodeinstall.sh && chmod +x masternodeinstall.sh && ./masternodeinstall.sh
+wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/motioninstall.sh && chmod +x motioninstall.sh && ./motioninstall.sh
 
 
 When prompted, enter your “masternodeprivkey” from before.
