@@ -27,9 +27,11 @@ Go to the tab at the bottom that says "Tools"
 Go to the tab at the top that says "Console"
 
 Wait for 15 confirmations, then run following command:
+
 masternode outputs
 
 You should see one line corresponding to the transaction id (tx_id) of your 1000 coins with a digit identifier (digit). Save these two strings in a text file.
+
 Example:
 {
   "6a66ad6011ee363c2d97da0b55b73584fef376dc0ef43137b478aa73b4b906b0": "0"
@@ -41,8 +43,11 @@ Run the following command:
 masternode genkey
 
 You should see a long key: (masternodeprivkey)
+
 EXAMPLE: 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-This is your masternode private key, record it to text file, keep it safe, do not share with anyone. This will be called “masternodeprivkey”
+
+This is your masternode private key, record it to text file, keep it safe, do not share with anyone.
+This will be called “masternodeprivkey”
 
 Next, you have to go to the data directory of your wallet 
 Go to wallet settings=> and click “Open masternode configuration file”
@@ -53,7 +58,8 @@ MN1 (YOUR VPS IP):7979 masternodeprivkey tx_id digit
 Put your data correctly, save it and close.
 Go to Motion Wallet, Click Settings, Check “Show Masternodes Tab”
 Save and Restart your wallet.
-Note that each line of the masternode.conf file corresponds to one masternode if you want to run more than one node from the same wallet, just make a new line and repeat steps.
+Note that each line of the masternode.conf file corresponds to one masternode if you want to run more than one node from the same wallet,
+just make a new line and repeat steps.
 
 **VPS Setup**
 
@@ -87,21 +93,25 @@ Your build will FAIL if you do not have enough RAM memory. If you do not have 2G
 
 This process can take a while, it will compile the Motion wallet.
 
-After build completes, you need to start the daemon to create data folders and files, wait a few seconds and stop the daemon so you can edit the conf file on next step, use the follow comandos to navigate to src folder to do it:
+After build completes, you need to start the daemon to create data folders and files, wait a few seconds and stop the daemon 
+so you can edit the conf file on next step, use the follow commands to navigate to src folder to do it:
 
 cd src/
 ./motiond -daemon
 
-Wait a few seconds then stops with:
+Wait a few seconds then stop with:
 
 ./motion-cli stop
 
-Navigate to the data directory by typing
+Navigate to the data directory by typing:
 
 cd /root/.motioncore
+
+now edit with:
+
 nano motion.conf
 
-Now copy paste the following configuration :
+Now copy paste the following configuration, and edit with your VPS IP and msternodeprivkey:
 
 rpcuser=user
 rpcpassword=pass
@@ -115,16 +125,20 @@ externalip=(YOUR VPS IP):7979
 masternode=1
 masternodeprivkey=masternodeprivkey
 
-You need to change IP to your VPS IP address, the masternodeprivkey is the one that you got from the main wallet. Choose whatever you like for user and password. Note that the port should be 7979 for Motion masternodes and rpcport is 3385 for sentinel.
+**IMPORTANT**
+You need to change IP to your VPS IP address, the masternodeprivkey is the one that you got from the main wallet.
+Choose whatever you like for user and password. Note that the port should be 7979 for Motion masternodes and rpcport is 3385 for sentinel.
 
-Type Ctrl + X => Y => Enter. The file motion.conf is now saved.
+Hold Ctrl + X
+type Y => Enter The file motion.conf is now saved!
 
 If you have a firewall running, you need to open the 7979 and 3385 port :
 
 sudo ufw allow 7979/tcp
 sudo ufw allow 3385/tcp
+sudo ufw enable
 
-Now Let's restart
+Now Let's restart motiond:
 
 cd /root/motion/src/
 ./motiond -daemon
@@ -133,7 +147,7 @@ Wait like 10 mins for your wallet to download the blockchain. You can check the 
 
 ./motion-cli getblockcount
 
-Now we need SENTINEL to fix WATCHDOG EXPIRED issue, run this 1 line for it:
+Now we need SENTINEL to fix WATCHDOG EXPIRED issue:
 
 **Install Prerequisites**
 Make sure Python version 2.7.x or above is installed:
@@ -145,10 +159,12 @@ sudo apt-get update
 sudo apt-get update; sudo apt-get install python3-pip
 sudo pip3 install virtualenv
 
-Make sure the local Motion daemon running is at least version 0.1.0 (10000)
+Make sure the local Motion daemon running is at least version 0.1.1 (10000)
 
 **Install Sentinel**
 Clone the Sentinel repo and install Python dependencies.
+
+type in terminal:
 
 cd
 git clone https://github.com/motioncrypto/sentinel.git && cd sentinel
@@ -160,7 +176,7 @@ Set up a crontab entry to call Sentinel every minute:
 
 crontab -e
 
-In the crontab editor, add the lines below, replacing '/home/YOURUSERNAME/sentinel' to the path where you cloned sentinel to:
+In the crontab editor, add the lines below, replace '/home/YOURUSERNAME/sentinel' to the path where you cloned sentinel: (should be /root)
 
 * * * * * cd /home/YOURUSERNAME/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
 
@@ -184,8 +200,15 @@ SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
 **Starting Your Masternode**
 
 Go back to your desktop wallet, to the Masternode tab.
-You need to wait for 15 confirmations in order to start the masternode On your VPS you can type: motion-cli getblockcount (needs to be more than 0 to be in sync)
-NOTE: If the Masternode tab isn’t showing, you need to  click settings, check “Show Masternodes Tab” save, and restart the wallet
+You need to wait for 15 confirmations in order to start the masternode on your VPS
+
+You can check by going to putty and type:
+
+cd /root/motion/src
+./motion-cli getblockcount (needs to be more than 0 to be in sync)
+
+**NOTE:** 
+If the Masternode tab isn’t showing, you need to  click settings, check “Show Masternodes Tab” save, and restart the wallet
 If your Masternode does not show, restart the wallet
  
 Now Click “start-all”. Your masternode should be now up and running !
