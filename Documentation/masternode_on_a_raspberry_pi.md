@@ -12,7 +12,8 @@ motion.conf file on LOCAL wallet MUST BE EMPTY!
 masternode.conf file on VPS wallet MUST BE EMPTY!
 NOTES: PRE_ENABLED status is NOT an issue, just restart local wallet and wait a few minutes.
 You need a different IP for each masternode you plan to hos
-This guide is for a single masternode, on a Ubuntu 14 64bit server (2GB RAM minimum) or 16.04 LTS. That will be controlled from the wallet on your local computer and all commands on VPS are running as root.
+This guide is for a single masternode, on a Ubuntu 14 64bit server (2GB RAM minimum) or 16.04 LTS. 
+That will be controlled from the wallet on your local computer and all commands on VPS are running as root.
 
 First we need to create 2–4GB of swap memory using these commands line by line:
 
@@ -25,7 +26,9 @@ sudo nano etc/fstab
 
 **Wallet Setup Part 1**
 go to whatismyipaddress.com and take note of your IP. 
-Then pull the plug on your modem, wait a bit and replug. Check the page again. If the same then good! If not, you will need to either:
+Then pull the plug on your modem, wait a bit and replug. Check the page again. If the same then good! 
+If not, you will need to either:
+
 A) Get a "Static IP Address" From your Service provider or
 B) Monitor your IP Address and change info if it changes.
 Moving on:
@@ -35,7 +38,9 @@ Copy the Address and Send EXACTLY 1000 MTN to this Address
 Go to the tab at the bottom that says "Tools"
 Go to the tab at the top that says "Console"
 Wait for 15 confirmations, then run following command: masternode outputs
-You should see one line corresponding to the transaction id (tx_id) of your 1000 coins with a digit identifier (digit). Save these two strings in a text file. Example:
+You should see one line corresponding to the transaction id (tx_id) of your 1000 coins with a digit identifier (digit). 
+Save these two strings in a text file. Example:
+
 EXAMPLE:
 {
   "6a66ad6011ee363c2d97da0b55b73584fef376dc0ef43137b478aa73b4b906b0": "0"
@@ -48,7 +53,8 @@ masternode genkey
 
 You should see a long key: (masternodeprivkey)
 EXAMPLE: 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-This is your masternode private key, record it to text file, keep it safe, do not share with anyone. This will be called “masternodeprivkey”
+This is your masternode private key, record it to text file, keep it safe, do not share with anyone. 
+This will be called “masternodeprivkey”
 
 Next, you have to go to the data directory of your wallet 
 Go to wallet settings=> and click “Open masternode configuration file”
@@ -59,7 +65,8 @@ MN1 (YOUR IP):7979 masternodeprivkey tx_id digit
 Put your data correctly, save it and close.
 Go to Motion Wallet, Click Settings, Check “Show Masternodes Tab”
 Save and Restart your wallet.
-Note that each line of the masternode.conf file corresponds to one masternode if you want to run more than one node from the same wallet, just make a new line and repeat steps.
+Note that each line of the masternode.conf file corresponds to one masternode if you want to run more than one node from the same wallet,
+just make a new line and repeat steps.
 
 **Raspberry Pi Setup**
 
@@ -130,9 +137,11 @@ make
 **IMPORTANT**
 
 Your build will FAIL if you do not have enough RAM memory. If you do not have 2GB or more make a Swap partition BEFORE you try to build!
-This Will take a really really long time and will throw a million errors. This is natural as it is, a Raspberry Pi. Don't worry as it will still work once your done, it will compile the Motion wallet.
+This Will take a really really long time and will throw a million errors. This is natural as it is, a Raspberry Pi. 
+Don't worry as it will still work once your done, it will compile the Motion wallet.
 
-After build completes, you need to start the daemon to create data folders and files, wait a few seconds and stop the daemon so you can edit the conf file on next step, use the following commands to navigate to src folder to do it:
+After build completes, you need to start the daemon to create data folders and files, wait a few seconds and stop the daemon 
+so you can edit the conf file on next step, use the following commands to navigate to src folder to do it:
 
 cd src/
 ./motiond -daemon
@@ -160,7 +169,8 @@ externalip=(YOUR IP):7979
 masternode=1
 masternodeprivkey=masternodeprivkey
 
-You need to change IP to your public IP address, the masternodeprivkey is the one that you got from the main wallet. Choose whatever you like for user and password. Note that the port should be 13385 for Motion masternodes and rpcport is 3385 for sentinel.
+You need to change IP to your public IP address, the masternodeprivkey is the one that you got from the main wallet. 
+Choose whatever you like for user and password. Note that the port should be 13385 for Motion masternodes and rpcport is 3385 for sentinel.
 
 Type Ctrl + X => Y => Enter. The file motion.conf is now saved.
 
@@ -178,7 +188,7 @@ Now Let's restart
 cd /root/motion/src/
 ./motiond -daemon
 
-Wait like 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
+Wait like 10 mins for your wallet to download the blockchain. You can check the progress with the following command:
 
 ./motion-cli getblockcount
 
