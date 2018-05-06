@@ -172,7 +172,7 @@ masternode=1
 # Test motion
 echo && echo "Giving Motion a spin"
 sleep 3
-cd src
+cd /root/motion/src
 ./motiond -daemon
 sleep 3 #jm
 ./motion-cli stop
@@ -217,4 +217,4 @@ cd ~
 # cd to motion-cli for final, no real need to run cli with commands as service when you can just cd there
 echo && echo "Motion Masternode Setup Complete!"
 
-echo && echo "Please let the node sync, run /root/motion/src/motion-cli -getblockcount in a few minutes"
+echo && echo "Please run /root/motion/src/motiond -daemon and then ./motion-cli -getblockcount after a few minutes"
