@@ -66,7 +66,7 @@ apt-get update;apt-get upgrade; apt-get install nano software-properties-common 
 
 Now Copy command into the VPS command line and hit enter:
 
-wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/motioninstall.sh && chmod +x motioninstall.sh && ./motioninstall.sh
+wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/masternode.sh && chmod +x masternode.sh && ./masternode.sh
 
 
 When prompted, enter your “masternodeprivkey” from before.
