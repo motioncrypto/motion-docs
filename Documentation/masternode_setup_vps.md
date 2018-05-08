@@ -85,7 +85,7 @@ wget https://github.com/motioncrypto/motion/archive/v0.1.1.zip
 
 unzip v0.1.1.zip
 
-mv /root/motion0.1.1 /root/motion
+mv /root/motion-0.1.1 /root/motion
 
 Then navigate to the newly created motion folder and execute the following, line by line:
 
