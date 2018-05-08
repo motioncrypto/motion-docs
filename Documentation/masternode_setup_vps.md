@@ -13,10 +13,15 @@ This guide is for a single masternode, on a Ubuntu 14 64bit server (2GB RAM mini
 If your VPS doesn’t have enough RAM, create 2–4GB of swap memory using these commands line by line:
 
 cd /
+
 sudo dd if=/dev/zero of=swapfile bs=1M count=3000
+
 sudo mkswap swapfile
+
 sudo swapon swapfile
+
 sudo nano etc/fstab
+
 /swapfile none swap sw 0 0
 
 **Wallet Setup Part 1**
@@ -72,19 +77,28 @@ Other: https://www.webhostface.com/kb/knowledgebase/connecting-to-vps-via-ssh/
 Now, Use SSH to Log into your VPS
 We need to install some dependencies. Please copy, paste and hit enter:
 
-apt-get update;apt-get upgrade -y;apt-get dist-upgrade -y;apt-get install nano htop git wget -y;apt-get install build-essential libtool autotools-dev automake pkg-config -y;apt-get install libssl-dev libevent-dev bsdmainutils software-properties-common -y;apt-get install libboost-all-dev -y;apt-get install libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev -y;add-apt-repository ppa:bitcoin/bitcoin -y;apt-get update;apt-get install libdb4.8-dev libdb4.8++-dev -y;
+apt-get update;apt-get upgrade -y;apt-get dist-upgrade -y;apt-get install nano htop git wget unzip -y;apt-get install build-essential libtool autotools-dev automake pkg-config -y;apt-get install libssl-dev libevent-dev bsdmainutils software-properties-common -y;apt-get install libboost-all-dev -y;apt-get install libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev -y;add-apt-repository ppa:bitcoin/bitcoin -y;apt-get update;apt-get install libdb4.8-dev libdb4.8++-dev -y;
 
 Now we have to build the wallet. Clone the Motion Github from Here:
 
-git clone https://github.com/motioncrypto/motion.git
+wget https://github.com/motioncrypto/motion/archive/v0.1.1.zip
+
+unzip v0.1.1.zip
+
+mv /root/motion0.1.1 /root/motion
 
 Then navigate to the newly created motion folder and execute the following, line by line:
 
 cd motion
+
 chmod 755 autogen.sh
+
 ./autogen.sh
+
 ./configure
+
 chmod 755 share/genbuild.sh
+
 make
 
 
@@ -98,6 +112,7 @@ After build completes, you need to start the daemon to create data folders and f
 so you can edit the conf file on next step, use the follow commands to navigate to src folder to do it:
 
 cd src/
+
 ./motiond -daemon
 
 Wait a few seconds then stop with:
