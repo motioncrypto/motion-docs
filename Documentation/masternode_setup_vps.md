@@ -87,6 +87,7 @@ chmod 755 autogen.sh
 chmod 755 share/genbuild.sh
 make
 
+
 **IMPORTANT**
 
 Your build will FAIL if you do not have enough RAM memory. If you do not have 2GB or more make a Swap partition BEFORE you try to build!
