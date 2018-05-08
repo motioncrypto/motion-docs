@@ -133,7 +133,9 @@ fi
 # Download motion
 echo && echo "Getting in Motion....."
 sleep 3
-sudo git clone https://github.com/motioncrypto/motion.git
+wget https://github.com/motioncrypto/motion/archive/v0.1.1.zip
+unzip v0.1.1.zip
+mv /root/motion-0.1.1 /root/motion
 cd motion
 chmod 755 autogen.sh
 chmod 755 share/genbuild.sh
