@@ -88,6 +88,7 @@ build-essential \
 libtool \
 autotools-dev \
 automake \
+unzip \
 pkg-config \
 libssl-dev \
 bsdmainutils \
