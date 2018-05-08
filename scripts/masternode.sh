@@ -199,6 +199,7 @@ WantedBy=multi-user.target
 chmod +x /etc/systemd/system/motiond.service
 sudo systemctl enable motiond
 sudo systemctl start motiond
+killall motiond
 
 # Download and install sentinel
 echo && echo "Installing Sentinel..."
@@ -220,4 +221,4 @@ cd ~
 # cd to motion-cli for final, no real need to run cli with commands as service when you can just cd there
 echo && echo "Motion Masternode Setup Complete!"
 
-echo && echo "Please run /root/motion/src/motiond -daemon and then ./motion-cli -getblockcount after a few minutes"
+echo && echo "Please run /root/motion/src/motiond -daemon and then ./motion-cli getblockcount after a few minutes"
