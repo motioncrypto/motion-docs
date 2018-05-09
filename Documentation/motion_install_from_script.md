@@ -117,7 +117,7 @@ Now Click “start-all”. Your masternode should be now up and running!
 **Checking Your Masternode**
 You can check the masternode status by going to the masternode wallet and typing:
  
-./motion-cli masternode status
+masternode status
  
 If your masternode is running it should print “Masternode successfully started”.
  
