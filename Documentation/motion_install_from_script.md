@@ -57,7 +57,6 @@ Note that each line of the masternode.conf file corresponds to one masternode if
 
 **Preparation:**
 Windows users will need a program called putty to connect to the VPS
-For a guide of how to use putty to connect to a vps please use: Digital ocean Other
 Use SSH to Log into your VPS
 
 We need to install some dependencies. Please copy, paste and hit enter:
