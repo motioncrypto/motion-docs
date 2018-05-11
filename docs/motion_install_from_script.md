@@ -11,7 +11,6 @@ Get a VPS from a provider like [DigitalOcean](https://www.digitalocean.com), [Vu
 - motion.conf file on LOCAL wallet MUST BE EMPTY! (if you haven't touched this file it's OK)
 - masternode.conf file on VPS wallet MUST BE EMPTY! (if you haven't touched this file it's OK)
 
-
 **NOTES:** `PRE_ENABLED` status is NOT an issue, just restart local wallet and wait a few minutes.
 
 You need a different IP for each masternode you plan to host.
