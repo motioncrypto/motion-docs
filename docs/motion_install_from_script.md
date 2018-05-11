@@ -1,7 +1,7 @@
 Motion MasterNode Install from script (Recommended)
 -------
 
-## Preparation
+### Preparation
 
 Get a VPS from a provider like [DigitalOcean](https://www.digitalocean.com), [Vultr](https://www.vultr.com/), [Linode](https://www.linode.com/), etc.
 
@@ -16,7 +16,7 @@ Get a VPS from a provider like [DigitalOcean](https://www.digitalocean.com), [Vu
 
 You need a different IP for each masternode you plan to host.
 
-## Wallet Setup Part 1
+### Wallet Setup Part 1
 
 - Open your Motion wallet on your desktop.
 - Click **Receive** tab, then click Request and put your Label such as “MN1”
@@ -90,7 +90,7 @@ When prompted, enter your `masternodeprivkey` from before.
 You will be asked for your VPS IP and a few other questions.
 The installation should finish successfully. Ask for help in [discord](https://discord.gg/pTDAaMa) if it doesn't.
 
-## Troubleshooting and testing:
+### Troubleshooting and testing:
 
 After the script finishes, you will want to check that it is running properly. Please type in:
 
@@ -116,7 +116,7 @@ or
 
 If you get an error that file does not exist, it may be that the script failed to build and we need to trace back the problem. Contact devs in [discord](https://discord.gg/pTDAaMa).
 
-## Starting Your Masternode
+### Starting Your Masternode
 
 Go back to your desktop wallet, to the Masternode tab.
 You need to wait for 15 confirmations in order to start the masternode- you can also check on your VPS by:
@@ -133,7 +133,7 @@ If your Masternode does not show, restart the wallet.
  
 Now Click `start-all`. Your masternode should be now up and running!
  
-## Checking Your Masternode
+### Checking Your Masternode
 You can check the masternode status by going to the masternode wallet and typing:
  
 `masternode status`
