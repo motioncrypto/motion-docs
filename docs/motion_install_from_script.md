@@ -7,11 +7,13 @@ Get a VPS from a provider like [DigitalOcean](https://www.digitalocean.com), [Vu
 
 - **Recommended VPS size:** 2GB RAM (if less its ok, we can make swap partition)
 - **It must be Ubuntu 16.04 (Xenial)**
-- Make sure you have a transaction of **exactly 1000 MTN** in your desktop wallet (If you dont, you can auto-make that transaction from you to you).
+- Make sure you have a transaction of **exactly 1000 XMN** in your desktop wallet (If you dont, just send 1000 XMN from you to you).
 - motion.conf file on LOCAL wallet MUST BE EMPTY! (if you haven't touched this file it's OK)
 - masternode.conf file on VPS wallet MUST BE EMPTY! (if you haven't touched this file it's OK)
 
 **NOTES:** `PRE_ENABLED` status is NOT an issue, just restart local wallet and wait a few minutes.
+
+'WATCHDOG_EXPIRED' is not a problem if you just installed. Give time for the network to sync, 10 + Minutes
 
 You need a different IP for each masternode you plan to host.
 
@@ -35,7 +37,7 @@ Example:
 }
 ```
 
-Note that if you get more than 1 line, it’s because you made multiple 1000 coins transactions, with the tx_id and digit associated.
+Note that if you get more than 1 line, it’s because you made multiple 1000 coin transactions, with the tx_id and digit associated.
 
 Run the following command:
 
@@ -86,32 +88,35 @@ Now Copy command into the VPS command line and hit enter:
 
 
 When prompted, enter your `masternodeprivkey` from before.
+
 You will be asked for your VPS IP and a few other questions.
+
 The installation should finish successfully. Ask for help in [discord](https://discord.gg/pTDAaMa) if it doesn't.
 
-### Troubleshooting and testing:
+Please note, the script will move motiond and motion-cli binaries to /usr/bin folder, so you don't need to navigate to motion/src folder anymore, you can run the commands without "./" on any place now
 
-After the script finishes, you will want to check that it is running properly. Please type in:
+### Testing:
 
-`cd /root/motion/src`
+After the script finishes, you will want to check that it is running properly. 
+Please type in:
 
-`./motion-cli masternode status`
+'motion-cli getinfo'
 
 If you get an error about permissions, you just need to kill the process and restart with:
 
-`pkill -f -9 motiond`
+'killall motiond'
 
 and restart with:
 
-`./motiond -daemon`
+'motiond -daemon'
 
 now test with:
 
-`./motion-cli masternode status`
+'motion-cli getinfo'
 
 or
 
-`./motion-cli getblockcount`
+'motion-cli getblockcount'
 
 If you get an error that file does not exist, it may be that the script failed to build and we need to trace back the problem. Contact devs in [discord](https://discord.gg/pTDAaMa).
 
@@ -120,9 +125,7 @@ If you get an error that file does not exist, it may be that the script failed t
 Go back to your desktop wallet, to the Masternode tab.
 You need to wait for 15 confirmations in order to start the masternode- you can also check on your VPS by:
 
-`cd /root/motion/src`
-
-`./motion-cli getblockcount`
+`motion-cli getblockcount`
 
 (needs to be more than 0 to be in sync, at the moment of writing this guide we are at block 4883)
 
