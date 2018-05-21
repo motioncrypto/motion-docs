@@ -60,7 +60,7 @@ Please make a new line and add:
 
 Example:
 
-`MN1 148.124.58.33:7979 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 6a66ad6011ee363c2d97da0b55b73584fef376dc0ef43137b478aa73b4b906b0 0`
+`MN1 148.124.58.33:7979 7xxxx(you get the idea)xxx 6a66ad6011ee363c2d97da0b55b73584fef376dc0ef43137b478aa73b4b906b0 0`
 
 Put your data correctly, **save it** and close.
 
