@@ -5,7 +5,7 @@ Motion MasterNode Manual Install
 
 - **Recommended VPS size:** 2GB RAM (if less its ok, we can make swap partition)
 - **It must be Ubuntu 16.04 (Xenial)**
-- Make sure you have a transaction of **exactly 1000 MTN** in your desktop wallet (If you dont, you can auto-make that transaction from you to you).
+- Make sure you have a transaction of **exactly 1000 XMN** in your desktop wallet (If you dont, you can auto-make that transaction from you to you).
 - motion.conf file on LOCAL wallet MUST BE EMPTY! (if you haven't touched this file it's OK)
 - masternode.conf file on VPS wallet MUST BE EMPTY! (if you haven't touched this file it's OK)
 - You need a different IP for each masternode you plan to host
