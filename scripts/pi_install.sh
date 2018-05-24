@@ -41,17 +41,11 @@ echo && sleep 3
         sudo dd if=/dev/zero of=swapfile bs=1M count=3000
         sudo mkswap swapfile
         sudo swapon swapfile
-        sudo nano etc/fstab
         echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
         sudo sysctl vm.swappiness=10
         sudo sysctl vm.vfs_cache_pressure=50
         echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.conf
         echo 'vm.vfs_cache_pressure=50' | sudo tee -a /etc/sysctl.conf
-    else
-        echo && echo "WARNING: Swap file detected, skipping add swap!"
-        sleep 3
-    fi
-fi
 
 
 # Update system 
@@ -104,6 +98,7 @@ python-virtualenv
     sudo apt-get -y install ufw
     echo && echo "Configuring UFW..."
     sleep 3
+    sudo ufw allow ssh
     sudo ufw allow 3385/tcp
     sudo ufw allow 7979/tcp
     echo "y" | sudo ufw enable
@@ -157,9 +152,10 @@ sleep 10
 echo && echo "Installing Sentinel..."
 sleep 3
 cd
-sudo apt-get -y install python3-pip
-sudo pip3 install virtualenv
-sudo apt-get install screen
+sudo apt-get install python-dev
+curl -O https://bootstrap.pypa.io/get-pip.py
+sudo python get-pip.py
+sudo pip install virtualenv
 sudo git clone https://github.com/motioncrypto/sentinel.git /root/sentinel
 cd /root/sentinel
 virtualenv venv
