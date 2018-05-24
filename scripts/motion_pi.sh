@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 clear
 cd ~
@@ -22,39 +22,26 @@ echo "██████████████████▓░     ░▓█
 echo "███████████████████▒     ▒███████████████████████████▓▓▓▓▓█████████████████████"
 echo "█████████████████████▓▓▓███████████████████████████████████████████████████████"
 echo && echo && echo
-sleep 3
-
-# Check for systemd
-systemctl --version >/dev/null 2>&1 || { echo "systemd is required. Are you using Ubuntu 16.04?"  >&2; exit 1; }
+sleep 2
 
 # Gather input from user
-read -e -p "Masternode Private Key (e.g. 7edfjLCUzGczZi3JQw8GHp434R9kNY33eFyMGeKRymkB56G4324h) : " key
+echo "Enter your Masternode Private Key"
+read -e -p "(e.g. 7edfjLCUzGczZi3JQw8GHp434R9kNY33eFyMGeKRymkB56G4324h) : " key
 if [[ "$key" == "" ]]; then
     echo "WARNING: No private key entered, exiting!!!"
     echo && exit
 fi
-read -e -p "VPS Server IP Address and Masternode Port 13385 : " ip
-echo && echo "Pressing ENTER will use the default value for the next prompts."
+read -e -p "VPS Server IP Address and Masternode Port like IP:7979 : " ip
 echo && sleep 3
-read -e -p "Add swap space? (Recommended) [Y/n] : " add_swap
-if [[ ("$add_swap" == "y" || "$add_swap" == "Y" || "$add_swap" == "") ]]; then
-    read -e -p "Swap Size [2G] : " swap_size
-    if [[ "$swap_size" == "" ]]; then
-        swap_size="2G"
-    fi
-fi    
-read -e -p "Install Fail2ban? (Recommended) [Y/n] : " install_fail2ban
-read -e -p "Install UFW and configure ports? (Recommended) [Y/n] : " UFW
 
-# Add swap if needed
-if [[ ("$add_swap" == "y" || "$add_swap" == "Y" || "$add_swap" == "") ]]; then
-    if [ ! -f /swapfile ]; then
+# Add swap
         echo && echo "Adding swap space..."
         sleep 3
-        sudo fallocate -l $swap_size /swapfile
-        sudo chmod 600 /swapfile
-        sudo mkswap /swapfile
-        sudo swapon /swapfile
+        cd /
+        sudo dd if=/dev/zero of=swapfile bs=1M count=3000
+        sudo mkswap swapfile
+        sudo swapon swapfile
+        sudo nano etc/fstab
         echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
         sudo sysctl vm.swappiness=10
         sudo sysctl vm.vfs_cache_pressure=50
@@ -88,73 +75,45 @@ build-essential \
 libtool \
 autotools-dev \
 automake \
+joe \
+unzip \
 pkg-config \
 libssl-dev \
 bsdmainutils \
 software-properties-common \
+dh-autoreconf \
 libzmq3-dev \
 libevent-dev \
-libboost-dev \
+libboost-all-dev \
 libboost-chrono-dev \
 libboost-filesystem-dev \
 libboost-program-options-dev \
 libboost-system-dev \
 libboost-test-dev \
 libboost-thread-dev \
-libdb4.8-dev \
-libdb4.8++-dev \
+protobuf-compiler \
+libprotobuf-dev \
+libdb++-dev \
+libdb-dev \
 libminiupnpc-dev \
 python-virtualenv 
 
-# Install fail2ban if needed
-if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" || "$install_fail2ban" == "") ]]; then
-    echo && echo "Installing fail2ban..."
-    sleep 3
-    sudo apt-get -y install fail2ban
-    sudo service fail2ban restart 
-fi
-
 # Install firewall if needed
-if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
     echo && echo "Installing UFW..."
     sleep 3
     sudo apt-get -y install ufw
     echo && echo "Configuring UFW..."
     sleep 3
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
-    sudo ufw allow ssh
     sudo ufw allow 3385/tcp
     sudo ufw allow 7979/tcp
     echo "y" | sudo ufw enable
     echo && echo "Firewall installed and enabled!"
-fi
-
-# Download motion
-echo && echo "Getting in Motion....."
-sleep 3
-sudo git clone https://github.com/motioncrypto/motion.git
-cd motion
-chmod 755 autogen.sh
-chmod 755 share/genbuild.sh
-
-# Install motion
-echo && echo "Putting This In Motion... Please Wait This May Take A While"
-sleep 3
-./autogen.sh
-./configure
-make
-
-# Test motion
-echo && echo "Giving Motion a spin"
-sleep 3
-cd src
-./motiond -daemon
-./motion-cli stop
 
 # Create config for motion
 echo && echo "Putting The Gears Motion..."
 sleep 3
+sudo mkdir /root/.motioncore #jm
+
 rpcuser=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 rpcpassword=`cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
 sudo touch /root/.motioncore/motion.conf
@@ -173,25 +132,26 @@ masternodeprivkey='$key'
 masternode=1
 ' | sudo -E tee /root/.motioncore/motion.conf
 
-# Setup systemd service
-echo && echo "Almost in Motion..."
-sleep 3
-sudo touch /etc/systemd/system/motiond.service
-echo '[Unit]
-Description=motiond
-After=network.target
-[Service]
-Type=simple
-User=root
-ExecStart=/root/motion/src/motiond -daemon
-ExecStop=/root/motion/src/motion-cli stop
-Restart=on-abort
-[Install]
-WantedBy=multi-user.target
-' | sudo -E tee /etc/systemd/system/motiond.service
-chmod +x /etc/systemd/system/motiond.service
-sudo systemctl enable motiond
-sudo systemctl start motiond
+
+#Download pre-compiled motion and run
+mkdir motion 
+mkdir motion/src
+cd motion/src
+wget https://github.com/motioncrypto/motion/releases/download/v0.1.2/motion-v0.1.2-arm.zip
+unzip motion-v0.1.2-arm.zip
+chmod +x motiond
+chmod +x motion-cli
+chmod +x motion-tx
+
+# Move binaries do lib folder
+sudo mv motion-cli /usr/bin/motion-cli
+sudo mv motion-tx /usr/bin/motion-tx
+sudo mv motiond /usr/bin/motiond
+
+#run daemon
+motiond -daemon
+
+sleep 10
 
 # Download and install sentinel
 echo && echo "Installing Sentinel..."
@@ -206,11 +166,17 @@ virtualenv venv
 . venv/bin/activate
 pip install -r requirements.txt
 export EDITOR=nano
-(crontab -l -u masternode 2>/dev/null; echo '* * * * * cd /root/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1') | sudo crontab -u root -
+(crontab -l -u root 2>/dev/null; echo '* * * * * cd /root/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1') | sudo crontab -u root -
 
-cd ~
+# Create a cronjob for making sure motiond runs after reboot
+if ! crontab -l | grep "@reboot motiond -daemon"; then
+  (crontab -l ; echo "@reboot motiond -daemon") | crontab -
+fi
 
 # cd to motion-cli for final, no real need to run cli with commands as service when you can just cd there
 echo && echo "Motion Masternode Setup Complete!"
 
-echo && echo "Please let the node sync, run /root/motion/src/motion-cli -getblockcount in a few minutes"
+echo "If you put correct PrivKey and VPS IP the daemon should be running."
+echo "Wait 2 minutes then run motion-cli getinfo to check blocks."
+echo "When fully synced you can start ALIAS on local wallet and finally check here with motion-cli masternode status."
+echo && echo
