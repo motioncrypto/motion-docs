@@ -20,7 +20,7 @@ You need a different IP for each masternode you plan to host.
 ### Wallet Setup Part 1
 
 - Open your Motion wallet on your desktop.
-- Click **Receive** tab, then click Request and put your Label such as “MN1”
+- Click **Receive** tab, then put your Label such as “MN1” and click Request. 
 - Copy the Address and Send **EXACTLY** 1000 XMN to this Address, wait for 15 confirmations.
 - Go to the tab at the bottom that says `Tools`
 - Go to the tab at the top that says `Console`
@@ -108,23 +108,23 @@ Please note, the script will move motiond and motion-cli binaries to /usr/bin fo
 After the script finishes, you will want to check that it is running properly. 
 Please type in:
 
-'motion-cli getinfo'
+`motion-cli getinfo`
 
-If you get an error about permissions, you just need to kill the process and restart with:
+If you put wrong Privkey or VIPSIP>:PORT and get an error, you just need edit the .conf file with the correct data with:
 
-'killall motiond'
+`nano /root/.motioncore/motion.conf`
 
-and restart with:
+Then save and exit using CTRL+X, Y and Enter, and restart daemon with:
 
-'motiond -daemon'
+`motiond -daemon`
 
 now test with:
 
-'motion-cli getinfo'
+`motion-cli getinfo`
 
 or
 
-'motion-cli getblockcount'
+`motion-cli getblockcount`
 
 If you get an error that file does not exist, it may be that the script failed to build and we need to trace back the problem. Contact devs in [discord](https://discord.gg/pTDAaMa).
 
@@ -146,7 +146,7 @@ Now Click `start-all`. Your masternode should be now up and running!
 ### Checking Your Masternode
 You can check the masternode status by going to the masternode wallet and typing:
  
-`masternode status`
+`motion-cli masternode status`
  
 If your masternode is running it should print `Masternode successfully started`.
  
