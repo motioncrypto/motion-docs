@@ -1,7 +1,7 @@
 Motion MasterNode Manual Install
 -------
 
-**Preparation**
+### Preparation
 
 - **Recommended VPS size:** 2GB RAM (if less its ok, we can make swap partition)
 - **It must be Ubuntu 16.04 (Xenial)**
