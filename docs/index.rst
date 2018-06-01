@@ -9,4 +9,5 @@ Contents:
 
    motion_install_from_script
    masternode_setup_vps
+   motion_scirpt_kurulum
    authors
