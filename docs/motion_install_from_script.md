@@ -157,3 +157,21 @@ You can also check your MN status by local wallet - `tools -> console`, just typ
 (Where XXXXX is yours first 5 character of TX_ID).
  
 **CONGRATULATIONS!**
+
+**TROUBLESHOOTING:**
+
+- If you put wrong Privkey or VPSIP:PORT and get an error, you need edit the .conf file with the correct data with:
+`nano /root/.motioncore/motion.conf`
+
+and restart daemon with:
+`motiond -daemon`
+
+- If get error: incorrect rpcuser or rpcpassword (authorization failed) you need to kill the process first with: pkill -9 motiond
+Then save and exit using CTRL+X, Y and Enter, and restart daemon with:
+`motiond -daemon`
+Now test with:
+`motion-cli getinfo`  or  `motion-cli getblockcount`
+
+- If after start alias and when check with motion-cli masternode status on your VPS isn't showing as "Masternode successfully started", go to your data folder of local wallet and delete files: mncache.dat and mnpayments.dat, restart local wallet, wait full sync and start the alias again.
+
+- If you get an error that file does not exist, it may be that the script failed to build and we need to trace back the problem. Contact our support in discord.
