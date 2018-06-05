@@ -103,9 +103,9 @@ apt-get update;apt-get upgrade -y;apt-get dist-upgrade -y;apt-get install nano h
 Now we have to build the wallet. Clone the Motion Github from Here:
 
 ```
-wget https://github.com/motioncrypto/motion/archive/v0.1.1.zip
-unzip v0.1.1.zip
-mv /root/motion-0.1.1 /root/motion
+wget https://github.com/motioncrypto/motion/archive/v0.1.2.zip
+unzip v0.1.2.zip
+mv /root/motion-0.1.2 /root/motion
 ```
 
 Then navigate to the newly created motion folder and execute the following, line by line:
@@ -201,7 +201,7 @@ sudo apt-get update; sudo apt-get install python3-pip
 sudo pip3 install virtualenv
 ```
 
-Make sure the local Motion daemon running is at least version 0.1.1 (10000)
+Make sure the local Motion daemon running is at least version 0.1.2 (10200)
 
 ### Install Motion Sentinel
 Clone the Sentinel repo and install Python dependencies.
