@@ -34,24 +34,39 @@ fi
 systemctl --version >/dev/null 2>&1 || { echo "systemd is required. Are you using Ubuntu 16.04 (Xenial)?"  >&2; exit 1; }
 
 # Gather input from user
-echo "Enter your Masternode Private Key"
-read -e -p "(e.g. 7edfjLCUzGczZi3JQw8GHp434R9kNY33eFyMGeKRymkB56G4324h) : " key
-if [[ "$key" == "" ]]; then
-    echo "WARNING: No private key entered, exiting!!!"
-    echo && exit
+KEY=$1
+if [ "$KEY" == "" ]; then
+    echo "Enter your Masternode Private Key"
+    read -e -p "(e.g. 7edfjLCUzGczZi3JQw8GHp434R9kNY33eFyMGeKRymkB56G4324h) : " KEY
+    if [[ "$KEY" == "" ]]; then
+        echo "WARNING: No private key entered, exiting!!!"
+        echo && exit
+    fi
 fi
-read -e -p "VPS Server IP Address and Masternode Port like IP:7979 : " ip
+IP=$(curl http://icanhazip.com)
+PORT="7979"
+if [[ "$IP" == "" ]]; then
+    read -e -p "VPS Server IP Address: " IP
+fi
+IP="$IP:$PORT"
+echo "Your IP and Port is $IP"
+if [ -z "$2" ]; then
 echo && echo "Pressing ENTER will use the default value for the next prompts."
-echo && sleep 3
-read -e -p "Add swap space? (Recommended) [Y/n] : " add_swap
+    echo && sleep 3
+    read -e -p "Add swap space? (Recommended) [Y/n] : " add_swap
+fi
 if [[ ("$add_swap" == "y" || "$add_swap" == "Y" || "$add_swap" == "") ]]; then
-    read -e -p "Swap Size [2G] : " swap_size
+    if [ -z "$2" ]; then
+        read -e -p "Swap Size [2G] : " swap_size
+    fi
     if [[ "$swap_size" == "" ]]; then
         swap_size="2G"
     fi
 fi
-read -e -p "Install Fail2ban? (Recommended) [Y/n] : " install_fail2ban
-read -e -p "Install UFW and configure ports? (Recommended) [Y/n] : " UFW
+if [ -z "$2" ]; then
+    read -e -p "Install Fail2ban? (Recommended) [Y/n] : " install_fail2ban
+    read -e -p "Install UFW and configure ports? (Recommended) [Y/n] : " UFW
+fi
 
 # Add swap if needed
 if [[ ("$add_swap" == "y" || "$add_swap" == "Y" || "$add_swap" == "") ]]; then
@@ -80,38 +95,11 @@ sleep 3
 sudo apt-get -y update
 sudo apt-get -y upgrade
 
-# Add Berkely PPA
-echo && echo "Installing bitcoin PPA..."
-sleep 3
-sudo apt-get -y install software-properties-common
-sudo apt-add-repository -y ppa:bitcoin/bitcoin
-sudo apt-get -y update
-
 # Install required packages
 echo && echo "Installing base packages..."
 sleep 3
 sudo apt-get -y install \
-build-essential \
-libtool \
-autotools-dev \
-automake \
 unzip \
-pkg-config \
-libssl-dev \
-bsdmainutils \
-software-properties-common \
-libzmq3-dev \
-libevent-dev \
-libboost-dev \
-libboost-chrono-dev \
-libboost-filesystem-dev \
-libboost-program-options-dev \
-libboost-system-dev \
-libboost-test-dev \
-libboost-thread-dev \
-libdb4.8-dev \
-libdb4.8++-dev \
-libminiupnpc-dev \
 python-virtualenv 
 
 # Install fail2ban if needed
@@ -156,8 +144,8 @@ rpcport=3385
 daemon=0 # required for systemd
 logtimestamps=1
 maxconnections=256
-externalip='$ip'
-masternodeprivkey='$key'
+externalip='$IP'
+masternodeprivkey='$KEY'
 masternode=1
 ' | sudo -E tee /root/.motioncore/motion.conf
 
