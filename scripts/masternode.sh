@@ -43,13 +43,12 @@ if [ "$KEY" == "" ]; then
         echo && exit
     fi
 fi
-IP=$(curl http://icanhazip.com)
+IP=$(curl http://icanhazip.com --ipv4)
 PORT="7979"
 if [[ "$IP" == "" ]]; then
     read -e -p "VPS Server IP Address: " IP
 fi
-IP="$IP:$PORT"
-echo "Your IP and Port is $IP"
+echo "Your IP and Port is $IP:$PORT"
 if [ -z "$2" ]; then
 echo && echo "Pressing ENTER will use the default value for the next prompts."
     echo && sleep 3
@@ -144,7 +143,7 @@ rpcport=3385
 daemon=0 # required for systemd
 logtimestamps=1
 maxconnections=256
-externalip='$IP'
+externalip='$IP:$PORT'
 masternodeprivkey='$KEY'
 masternode=1
 ' | sudo -E tee /root/.motioncore/motion.conf
@@ -199,8 +198,19 @@ fi
 
 # cd to motion-cli for final, no real need to run cli with commands as service when you can just cd there
 echo && echo "Motion Masternode Setup Complete!"
+echo && echo "Now we will wait until the node get full sync."
 
+COUNTER=$(motion-cli getblockcount)
+TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
+while [  $COUNTER -lt $TOTALBLOCKS ]; do
+    echo The counter is $COUNTER
+    let COUNTER=$(motion-cli getblockcount)
+    sleep 3
+done
+echo "Sync complete"
+if [ -n "$2" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/saveIp?ip=$IP
+fi
 echo "If you put correct PrivKey and VPS IP the daemon should be running."
-echo "Wait 2 minutes then run motion-cli getinfo to check blocks."
-echo "When fully synced you can start ALIAS on local wallet and finally check here with motion-cli masternode status."
+echo "Now you can start ALIAS on local wallet and finally check here with motion-cli masternode status."
 echo && echo
