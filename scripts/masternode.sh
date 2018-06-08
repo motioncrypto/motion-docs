@@ -178,8 +178,6 @@ TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
 
 sleep 10
 
-COUNTER=$(motion-cli getblockcount)
-
 # Download and install sentinel
 echo && echo "Installing Sentinel..."
 sleep 3
@@ -202,6 +200,9 @@ fi
 # cd to motion-cli for final, no real need to run cli with commands as service when you can just cd there
 echo && echo "Motion Masternode Setup Complete!"
 echo && echo "Now we will wait until the node get full sync."
+
+$COUNTER=0
+sleep 10
 
 while [ $COUNTER -lt $TOTALBLOCKS ]; do
     echo The current progress is $COUNTER/$TOTALBLOCKS
