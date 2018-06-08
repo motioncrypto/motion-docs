@@ -174,10 +174,11 @@ sudo mv motiond /usr/bin/motiond
 #run daemon
 motiond -daemon -datadir=/root/.motioncore
 
-COUNTER=$(motion-cli getblockcount)
 TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
 
 sleep 10
+
+COUNTER=$(motion-cli getblockcount)
 
 # Download and install sentinel
 echo && echo "Installing Sentinel..."
