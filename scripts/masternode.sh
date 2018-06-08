@@ -201,7 +201,7 @@ echo && echo "Now we will wait until the node get full sync."
 
 COUNTER=$(motion-cli getblockcount)
 TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
-while [  $COUNTER -lt $TOTALBLOCKS ]; do
+while [ $COUNTER -lt $TOTALBLOCKS ]; do
     echo The current progress is $COUNTER/$TOTALBLOCKS
     let COUNTER=$(motion-cli getblockcount)
     sleep 5
