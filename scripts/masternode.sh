@@ -174,6 +174,9 @@ sudo mv motiond /usr/bin/motiond
 #run daemon
 motiond -daemon -datadir=/root/.motioncore
 
+COUNTER=$(motion-cli getblockcount)
+TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
+
 sleep 10
 
 # Download and install sentinel
@@ -199,8 +202,6 @@ fi
 echo && echo "Motion Masternode Setup Complete!"
 echo && echo "Now we will wait until the node get full sync."
 
-COUNTER=$(motion-cli getblockcount)
-TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
 while [ $COUNTER -lt $TOTALBLOCKS ]; do
     echo The current progress is $COUNTER/$TOTALBLOCKS
     let COUNTER=$(motion-cli getblockcount)
