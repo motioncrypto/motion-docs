@@ -80,7 +80,7 @@ Use SSH to Log into your VPS
 
 We need to install some dependencies. Please copy, paste and hit enter:
 
-`apt-get update;apt-get upgrade; apt-get install nano software-properties-common git wget -y;`
+`apt-get update;apt-get upgrade -y; apt-get install nano git wget -y;`
 
 Now Copy command into the VPS command line and hit enter:
 

@@ -172,7 +172,7 @@ sudo mv motion-tx /usr/bin/motion-tx
 sudo mv motiond /usr/bin/motiond
 
 #run daemon
-motiond -daemon
+motiond -daemon -datadir=/root/.motioncore
 
 sleep 10
 
@@ -182,7 +182,6 @@ sleep 3
 cd
 sudo apt-get -y install python3-pip
 sudo pip3 install virtualenv
-sudo apt-get install screen
 sudo git clone https://github.com/motioncrypto/sentinel.git /root/sentinel
 cd /root/sentinel
 virtualenv venv
@@ -203,14 +202,15 @@ echo && echo "Now we will wait until the node get full sync."
 COUNTER=$(motion-cli getblockcount)
 TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
 while [  $COUNTER -lt $TOTALBLOCKS ]; do
-    echo The counter is $COUNTER
+    echo The current progress is $COUNTER/$TOTALBLOCKS
     let COUNTER=$(motion-cli getblockcount)
-    sleep 3
+    sleep 5
 done
 echo "Sync complete"
 if [ -n "$2" ]; then
+    echo "Saving IP"
     curl https://us-central1-motion-masternode-installer.cloudfunctions.net/saveIp?ip=$IP
 fi
-echo "If you put correct PrivKey and VPS IP the daemon should be running."
+echo && echo "If you put correct PrivKey and VPS IP the daemon should be running."
 echo "Now you can start ALIAS on local wallet and finally check here with motion-cli masternode status."
 echo && echo
