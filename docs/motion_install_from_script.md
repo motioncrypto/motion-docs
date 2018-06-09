@@ -84,7 +84,8 @@ We need to install some dependencies. Please copy, paste and hit enter:
 
 Now Copy command into the VPS command line and hit enter:
 
-`wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/masternode.sh; chmod +x masternode.sh; ./masternode.sh`
+``wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/masternode.sh; chmod +x masternode.sh; ./masternode.sh``
+
 When prompted, enter your `masternodeprivkey` from before.
 
 You will be asked for your VPS IP and a few other questions.
