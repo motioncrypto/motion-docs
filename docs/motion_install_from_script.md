@@ -84,24 +84,15 @@ We need to install some dependencies. Please copy, paste and hit enter:
 
 Now Copy command into the VPS command line and hit enter:
 
-`wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/masternode.sh`
-
-Then make it executable:
-
-`chmod +x masternode.sh`
-
-Now lets run it:
-
-`./masternode.sh`
-
-
+`wget https://raw.githubusercontent.com/motioncrypto/motion-docs/master/scripts/masternode.sh; chmod +x masternode.sh; ./masternode.sh`
 When prompted, enter your `masternodeprivkey` from before.
 
 You will be asked for your VPS IP and a few other questions.
+The installation should finish successfully.
 
-The installation should finish successfully. Ask for help in [discord](https://discord.gg/pTDAaMa) if it doesn't.
+Ask for help in [discord](https://discord.gg/pTDAaMa) if it doesn't.
 
-Please note, the script will move motiond and motion-cli binaries to /usr/bin folder, so you don't need to navigate to motion/src folder anymore, you can run the commands without "./" on any place now
+Please note, the script will move motiond and motion-cli binaries to /usr/bin folder, so you don't need to navigate to motion/src folder anymore, you can run the commands without "./" on any place now.
 
 ### Testing:
 
