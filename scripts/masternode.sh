@@ -201,7 +201,7 @@ fi
 echo && echo "Motion Masternode Setup Complete!"
 echo && echo "Now we will wait until the node get full sync."
 
-$COUNTER=0
+COUNTER=0
 sleep 10
 
 while [ $COUNTER -lt $TOTALBLOCKS ]; do
