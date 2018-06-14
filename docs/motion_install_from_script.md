@@ -54,9 +54,9 @@ Next, you have to go to the data directory of your wallet:
 - Go to wallet settings tab and click `Open masternode configuration file`
 - You should see 2 lines both with a # to comment them out.
 
-Please make a new line and add:
+Please make a new line and add::
 
-`MN1 (YOUR VPS IP):7979 masternodeprivkey tx_id digit`
+    MN1 (YOUR VPS IP):7979 masternodeprivkey tx_id digit
 
 Example:
 
