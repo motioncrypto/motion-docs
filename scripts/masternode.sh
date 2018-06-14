@@ -206,7 +206,7 @@ sleep 10
 
 while [ $COUNTER -lt $TOTALBLOCKS ]; do
     echo The current progress is $COUNTER/$TOTALBLOCKS
-    let COUNTER=$(motion-cli getblockcount -datadir=/root/.motioncore)
+    let COUNTER=$(motion-cli -datadir=/root/.motioncore getblockcount)
     sleep 5
 done
 echo "Sync complete"
