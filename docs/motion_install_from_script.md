@@ -1,4 +1,4 @@
-Motion MasterNode Install from script (Recommended)
+Motion MasterNode Install from script (10 minutes)
 -------
 
 ### Preparation
