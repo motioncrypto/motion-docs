@@ -16,7 +16,7 @@ It will create a new droplet (VPS) for each MasterNode you plan to host.
 
 ### Part 1
 
-- Download the [https://github.com/motioncrypto/masternode-installer/releases](Masternode Installer) for your platform (Currently only 64 bits OS supported).
+- Download the (https://github.com/motioncrypto/masternode-installer/releases)[Masternode Installer] for your platform (Currently only 64 bits OS supported).
 - Close your Motion Wallet if is open.
 - Run the Installer.
 - Login into your DigitalOcean account.
