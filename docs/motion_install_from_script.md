@@ -17,7 +17,7 @@ Get a VPS from a provider like [DigitalOcean](https://www.digitalocean.com), [Vu
 
 You need a different IP for each masternode you plan to host.
 
-### Wallet Setup Part 1
+### Wallet Setup
 
 - Open your Motion wallet on your desktop.
 - Click **Receive** tab, then put your Label such as “MN1” and click Request. 
@@ -70,7 +70,7 @@ Save and restart your Motion wallet.
 
 Note that each line of the `masternode.conf` file corresponds to one masternode if you want to run more than one node from the same wallet, just make a new line and repeat steps.
 
-**VPS Setup**
+### VPS Setup
 
 **Preparation:**
 Windows users will need a program called [putty](https://www.putty.org/) to connect to the VPS
