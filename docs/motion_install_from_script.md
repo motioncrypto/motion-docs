@@ -95,7 +95,7 @@ Ask for help in [discord](https://discord.gg/pTDAaMa) if it doesn't.
 
 Please note, the script will move motiond and motion-cli binaries to /usr/bin folder, so you don't need to navigate to motion/src folder anymore, you can run the commands without "./" on any place now.
 
-### Testing:
+### Testing
 
 After the script finishes, you will want to check that it is running properly. 
 Please type in:

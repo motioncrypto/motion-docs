@@ -49,6 +49,11 @@ if [[ "$IP" == "" ]]; then
     read -e -p "VPS Server IP Address: " IP
 fi
 echo "Your IP and Port is $IP:$PORT"
+if [ -n "$3" ]; then
+    echo "Saving IP"
+    DOCUMENTID=$(curl https://us-central1-motion-masternode-installer.cloudfunctions.net/saveIp?ip=$IP)
+    echo "Your DocumentId is $DOCUMENTID"
+fi
 if [ -z "$2" ]; then
 echo && echo "Pressing ENTER will use the default value for the next prompts."
     echo && sleep 3
@@ -69,6 +74,10 @@ fi
 
 # Add swap if needed
 if [[ ("$add_swap" == "y" || "$add_swap" == "Y" || "$add_swap" == "") ]]; then
+    if [ -n "$3" ]; then
+        curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=2
+    fi
+
     if [ ! -f /swapfile ]; then
         echo && echo "Adding swap space..."
         sleep 3
@@ -90,12 +99,18 @@ fi
 
 # Update system 
 echo && echo "Upgrading system..."
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=3
+fi
 sleep 3
 sudo apt-get -y update
 sudo apt-get -y upgrade
 
 # Install required packages
 echo && echo "Installing base packages..."
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=4
+fi
 sleep 3
 sudo apt-get -y install \
 unzip \
@@ -103,6 +118,10 @@ python-virtualenv
 
 # Install fail2ban if needed
 if [[ ("$install_fail2ban" == "y" || "$install_fail2ban" == "Y" || "$install_fail2ban" == "") ]]; then
+    if [ -n "$3" ]; then
+        curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=5
+    fi
+
     echo && echo "Installing fail2ban..."
     sleep 3
     sudo apt-get -y install fail2ban
@@ -111,6 +130,10 @@ fi
 
 # Install firewall if needed
 if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
+    if [ -n "$3" ]; then
+        curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=6
+    fi
+
     echo && echo "Installing UFW..."
     sleep 3
     sudo apt-get -y install ufw
@@ -126,6 +149,9 @@ if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
 fi
 
 # Create config for motion
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=7
+fi
 echo && echo "Putting The Gears Motion..."
 sleep 3
 sudo mkdir /root/.motioncore #jm
@@ -150,6 +176,9 @@ masternode=1
 
 
 #Download pre-compiled motion and run
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=8
+fi
 mkdir motion 
 mkdir motion/src
 cd motion/src
@@ -179,6 +208,9 @@ TOTALBLOCKS=$(curl https://explorer.motionproject.org/api/getblockcount)
 sleep 10
 
 # Download and install sentinel
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=9
+fi
 echo && echo "Installing Sentinel..."
 sleep 3
 cd
@@ -202,18 +234,19 @@ echo && echo "Motion Masternode Setup Complete!"
 echo && echo "Now we will wait until the node get full sync."
 
 COUNTER=0
-sleep 10
-
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=10
+fi
 while [ $COUNTER -lt $TOTALBLOCKS ]; do
     echo The current progress is $COUNTER/$TOTALBLOCKS
     let COUNTER=$(motion-cli -datadir=/root/.motioncore getblockcount)
     sleep 5
 done
 echo "Sync complete"
-if [ -n "$2" ]; then
-    echo "Saving IP"
-    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/saveIp?ip=$IP
+if [ -n "$3" ]; then
+    curl https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=$DOCUMENTID&step=11
 fi
+
 echo && echo "If you put correct PrivKey and VPS IP the daemon should be running."
 echo "Now you can start ALIAS on local wallet and finally check here with motion-cli masternode status."
 echo && echo
