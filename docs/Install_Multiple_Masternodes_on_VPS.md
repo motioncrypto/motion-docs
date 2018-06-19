@@ -147,7 +147,7 @@ apt-get update;apt-get upgrade -y;apt-get install nano htop git wget unzip -y;
 If your VPS is 1 GB or less of RAM, We need to make swap memory by using these commands line by line:
 
 ```
-cd /
+cd
 sudo dd if=/dev/zero of=swapfile bs=1M count=3000
 sudo mkswap swapfile
 sudo swapon swapfile
@@ -161,12 +161,15 @@ copy and paste this one line, save with crtl x and y to save:
 
 `/swapfile none swap sw 0 0`
 
-If you have a firewall running, you need to open the `7979` and `3385` port, example on UFW:
+If you have a firewall running, you need to open the `7979` `3385` `3386` `3387` `3388` ports, example on UFW:
 
 ```
 sudo ufw allow ssh
 sudo ufw allow 7979/tcp
 sudo ufw allow 3385/tcp
+sudo ufw allow 3386/tcp
+sudo ufw allow 3387/tcp
+sudo ufw allow 3388/tcp
 sudo ufw enable
 ```
 
@@ -200,7 +203,7 @@ sudo mv motion-tx /usr/bin/motion-tx
 sudo mv motiond /usr/bin/motiond
 ```
 
-Now we need to login to each user and setup the Masternodes. Do:
+Now we need to login to each user and setup the Masternodes (depending on how many you make). Do:
 
 `su motion1`
 
@@ -212,15 +215,13 @@ Now lets get the folders ready.
 
 `mkdir .motioncore`
 
-`mkdir motion`
-
 Now, let's get your motion.conf ready with:
 
 `cd .motioncore`
 
 `nano motion.conf`
 
-Copy and paste this configuration template:
+Copy and paste this configuration template, add in your own variables:
 
 ```
 rpcuser=<make a user>
@@ -254,7 +255,7 @@ Let's get Motiond running. Do:
 
 Motiond should now have started! 
 
-Wait like 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
+It will take about 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
 
 `motion-cli getblockcount`
 
@@ -298,6 +299,7 @@ In the crontab editor, add the lines below, replace `/home/YOURUSERNAME/sentinel
 
 ```
 * * * * * cd /home/motion1/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+@reboot motiond -daemon
 ```
 
 ### Troubleshooting
@@ -322,15 +324,13 @@ Now lets get the folders ready.
 
 `mkdir .motioncore`
 
-`mkdir motion`
-
 Now, let's get your motion.conf ready with:
 
 `cd .motioncore`
 
 `nano motion.conf`
 
-Copy and paste this configuration template:
+Copy and paste this configuration template, add your variables:
 
 ```
 rpcuser=<make a user>
@@ -364,28 +364,11 @@ Let's get Motiond running. Do:
 
 Motiond should now have started! 
 
-Wait like 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
+It will take about 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
 
 `motion-cli getblockcount`
 
 Now we need SENTINEL to fix WATCHDOG EXPIRED issue:
-
-### Install Prerequisites For Sentinel
-First, we need to return back to home do:
-
-`cd`
-
-Now Make sure Python version 2.7.x or above is installed:
-
-`python --version`
-
-Update system packages and ensure virtualenv is installed:
-
-```
-sudo apt-get update
-sudo apt-get update; sudo apt-get install python3-pip
-sudo pip3 install virtualenv
-```
 
 ### Install Motion Sentinel
 Clone the Sentinel repo and install Python dependencies.
@@ -407,7 +390,10 @@ Set up a crontab entry to call Sentinel every minute:
 In the crontab editor, add the lines below, replace `/home/YOURUSERNAME/sentinel` to the path where you cloned sentinel: (should be /motion1)
 
 
-`* * * * * cd /home/motion2/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1`
+```
+* * * * * cd /home/motion2/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+@reboot motiond -daemon
+```
 
 ### Troubleshooting
 To view debug output, set the SENTINEL_DEBUG environment variable to anything non-zero, then run the script manually:
@@ -416,7 +402,7 @@ SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
 
 **NOTE:** You will need to repeat these steps for each Masternode you are going to install on this VPS. I suggest you do NO MORE than 4 per VPS
 
-Now we need to login to each user and setup the Masternodes. Do:
+Now we need to login to each user and setup the 3rd Masternode. Do:
 
 `su motion3`
 
@@ -427,8 +413,6 @@ Now lets get the folders ready.
 `cd`
 
 `mkdir .motioncore`
-
-`mkdir motion`
 
 Now, let's get your motion.conf ready with:
 
@@ -442,7 +426,7 @@ Copy and paste this configuration template:
 rpcuser=<make a user>
 rpcpassword=<make a password>
 rpcallowip=127.0.0.1
-rpcport=3389
+rpcport=3387
 bind=<your third ip address>
 listen=1
 server=1
@@ -470,28 +454,11 @@ Let's get Motiond running. Do:
 
 Motiond should now have started! 
 
-Wait like 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
+It will take about 10 mins for your wallet to download the blockchain. You can check the progress with the following command :
 
 `motion-cli getblockcount`
 
 Now we need SENTINEL to fix WATCHDOG EXPIRED issue:
-
-### Install Prerequisites For Sentinel
-First, we need to return back to home do:
-
-`cd`
-
-Now Make sure Python version 2.7.x or above is installed:
-
-`python --version`
-
-Update system packages and ensure virtualenv is installed:
-
-```
-sudo apt-get update
-sudo apt-get update; sudo apt-get install python3-pip
-sudo pip3 install virtualenv
-```
 
 ### Install Motion Sentinel
 Clone the Sentinel repo and install Python dependencies.
@@ -514,6 +481,7 @@ In the crontab editor, add the lines below, replace `/home/YOURUSERNAME/sentinel
 
 ```
 * * * * * cd /home/motion3/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+@reboot motiond -daemon
 ```
 
 ### Troubleshooting
@@ -522,9 +490,9 @@ To view debug output, set the SENTINEL_DEBUG environment variable to anything no
 SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
 
 ###MasterNode Number 4
-Congrats, your MN should be running, and synced by now. Let's get the rest ready.
+Congrats, your MN should be running, and synced by now. Let's get the last one ready.
 
-`su motion2`
+`su motion4`
 
 Then enter the password
 
@@ -538,8 +506,6 @@ Now lets get the folders ready.
 
 `mkdir .motioncore`
 
-`mkdir motion`
-
 Now, let's get your motion.conf ready with:
 
 `cd .motioncore`
@@ -552,7 +518,7 @@ Copy and paste this configuration template:
 rpcuser=<make a user>
 rpcpassword=<make a password>
 rpcallowip=127.0.0.1
-rpcport=3383#<-you need a different port for every MN
+rpcport=3388 #<-you need a different port for every MN
 bind=<your fourth ip address>
 listen=1
 server=1
@@ -586,23 +552,6 @@ Wait like 10 mins for your wallet to download the blockchain. You can check the 
 
 Now we need SENTINEL to fix WATCHDOG EXPIRED issue:
 
-### Install Prerequisites For Sentinel
-First, we need to return back to home do:
-
-`cd`
-
-Now Make sure Python version 2.7.x or above is installed:
-
-`python --version`
-
-Update system packages and ensure virtualenv is installed:
-
-```
-sudo apt-get update
-sudo apt-get update; sudo apt-get install python3-pip
-sudo pip3 install virtualenv
-```
-
 ### Install Motion Sentinel
 Clone the Sentinel repo and install Python dependencies.
 
@@ -623,7 +572,10 @@ Set up a crontab entry to call Sentinel every minute:
 In the crontab editor, add the lines below, replace `/home/YOURUSERNAME/sentinel` to the path where you cloned sentinel: (should be /motion4)
 
 
-`* * * * * cd /home/motion4/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1`
+```
+* * * * * cd /home/motion4/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
+@reboot motiond -daemon
+```
 
 ### Troubleshooting
 To view debug output, set the SENTINEL_DEBUG environment variable to anything non-zero, then run the script manually:
@@ -636,23 +588,25 @@ SENTINEL_DEBUG=1 ./venv/bin/python bin/sentinel.py
 Now that everything is installed, go back to your desktop wallet, to the Masternode tab.
 You need to wait for 15 confirmations in order to start the masternode on your VPS
 
-**NOTE:** 
-If the Masternode tab isnâ€™t showing, you need to  click settings, check `Show Masternodes Tab` save, and restart the wallet
+If the Masternode tab is not showing, you need to  click settings, check `Show Masternodes Tab` save, and restart the wallet
 If your Masternode does not show, restart the wallet
 We should see each line in the Masternode tab as "MISSING" unless you restarted the wallet. If you did a restart, you need to wait for it to fully sync. Then go to Masternodes Tab and click "Start All" 
 Your masternode should be now up and running!
-It should either say "Watchdog Expired" or "Enabled" Watchdog Expired is just a sync error with Sentinel, it is no problem and should correct in a few minutes/hours
+It should either say "Watchdog Expired" or "Enabled" Watchdog Expired is just a sync error with Sentinel, it is no problem and should correct in a few minutes/hours. Sometimes you may need to run the "Start Alias" More than once, within the first hour, it is possible that a Masternode may need a new start, the best practice is to leave the wallet open a few hours and return back to check on it. If any has the status of "New Start Required" Highlight it by clicking on it, then click "Start Alias" or, Right click and "Start Alias"
 
 ### Checking Your Masternode
-You can check the masternode status by going to the masternode vps and typing:
+You can check the masternode status by going to the masternode users and typing:
 
 ```
+su (your usernames)
 motion-cli masternode status
 ```
 
 If your masternode is running it should print `Masternode successfully started`.
+If it prints `Not Capable Masternode Not in Masternode List` This means you have not started the masternode on the local wallet.
+If it prints `New Start Required` You will need to open wallet, and run "Start Alias"
  
-You can also check your MN status by local wallet - `tools -> console`, just type:
+You can also check your MN status by local wallet - `tools -> console`, then type:
  
 `masternode list full XXXXX`
  
