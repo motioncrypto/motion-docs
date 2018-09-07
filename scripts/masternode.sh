@@ -182,14 +182,17 @@ fi
 mkdir motion 
 mkdir motion/src
 cd motion/src
+rm -rf ./motion-v*
 #Select OS architecture
     if [ `getconf LONG_BIT` = "64" ]
         then
-            wget https://github.com/motioncrypto/motion/releases/download/v0.1.2/motion-v0.1.2-lin-64bits.zip
-            unzip motion-v0.1.2-lin-64bits.zip
+            DOWNLOADLINK=curl -s https://api.github.com/repos/motioncrypto/motion/releases/latest | grep browser_download_url | grep lin-64bits | cut -d '"' -f 4
+            wget $DOWNLOADLINK
+            unzip motion-v*
     else
-        wget https://github.com/motioncrypto/motion/releases/download/v0.1.2/motion-v0.1.2-lin-32bits.zip
-        unzip motion-v0.1.2-lin-32bits.zip
+        DOWNLOADLINK=curl -s https://api.github.com/repos/motioncrypto/motion/releases/latest | grep browser_download_url | grep lin-32bits | cut -d '"' -f 4
+        wget $DOWNLOADLINK
+        unzip motion-v*
     fi
 chmod +x motiond
 chmod +x motion-cli
