@@ -24,7 +24,8 @@ You need a different IP for each masternode you plan to host.
 - Copy the Address and Send **EXACTLY** 1000 XMN to this Address, wait for 15 confirmations.
 - Go to the tab at the bottom that says `Tools`
 - Go to the tab at the top that says `Console`
-- Then run following command:
+
+Wait for 15 confirmations, then run following command:
 
 `masternode outputs`
 
@@ -37,9 +38,11 @@ Example:
 }
 ```
 
-Note that if you get more than 1 line, it’s because you made multiple 1000 coin transactions, with the tx_id and digit associated.
+Copy this and paste it to that text file, we will throw away all the {} "" :
 
-Run the following command:
+Note that if you get more than 1 line, it's because you made multiple 1000 XMN transactions, with the tx_id and digit associated. This isn't a problem, we just do some extra steps to make a new genkey for each one, if your installing more than one.
+
+Now, type in and run the following command:
 
 `masternode genkey`
 
@@ -47,21 +50,40 @@ You should see a long key: (masternodeprivkey)
 
 EXAMPLE: `7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
 
-This is your masternode private key, record it to text file, keep it safe, do not share with anyone. This will be called `masternodeprivkey`
+This is your masternode private key, copy and paste it to the text file, keep it safe, do not share with anyone. This will be called `masternodeprivkey`
 
-Next, you have to go to the data directory of your wallet:
+Next, We need to get the configuation files ready.
 
-- Go to wallet settings tab and click `Open masternode configuration file`
-- You should see 2 lines both with a # to comment them out.
+- Open Wallet 
+- Select "settings" => and click "Open masternode configuration file"
+- Open this file with a text editor like notepad or notepad ++
 
-Please make a new line and add::
+You should see 3 lines both with a # to comment them out, Like this EXAMPLE:
 
-    MN1 (YOUR VPS IP):7979 masternodeprivkey tx_id digit
+```
+# Masternode config file dc56e5560618aca0bdb900e5cd75f25b37910ae9ca7a214ca3d5c935f1912d62
+# Format: alias IP:port masternodeprivkey collateral_output_txid collateral_output_index
+# Example: mn1 127.0.0.2:19999 93HaYBVUCYjEMeeH1Y4X37tGBDQL8Xg 2bcd3c84c84f87ea188100324456a67c 0
+```
+
+The Format here is:
+
+`MN1(LABEL)(YOUR VPS IP):7979 masternodeprivkey tx_id digit`
+
+Please make a new line, or clear the document and put the information we copied earlier.
 
 Example:
 
-`MN1 148.124.58.33:7979 7xxxx(you get the idea)xxx 6a66ad6011ee363c2d97da0b0ef43137b478aa73b4b906b0 0`
+`MN1 148.124.58.33:7979 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 6a66ad6011ee363c2d97313773b4b906b0 0`
 
+So now it should look something like:
+
+```
+# Masternode config file dc56e5560618aca0bdb900e5cd75f25b37910ae9ca7a214ca3d5c935f1912d62
+# Format: alias IP:port masternodeprivkey collateral_output_txid collateral_output_index
+# Example: mn1 127.0.0.2:19999 93HaYBVUCYjEMeeH1Y4X37tGBDQL8Xg 2bcd3c84c84f87ea18810d0324456a67c 0
+MN1 148.124.58.33:7979 7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 6a66ad6011ee363c2d973137b73b4b906b0 0
+```
 Put your data correctly, **save it** and close.
 
 Go to Motion Wallet, Click `Settings`, Check `Show Masternodes Tab`.
@@ -88,12 +110,10 @@ And give it permission and run: ``chmod +x masternode.sh; ./masternode.sh``
 
 When prompted, enter your `masternodeprivkey` from before.
 
-You will be asked for your VPS IP and a few other questions.
+You will be asked a few other questions, you can push enter to default on these.
 The installation should finish successfully.
 
 Ask for help in [discord](https://discord.gg/pTDAaMa) if it doesn't.
-
-Please note, the script will move motiond and motion-cli binaries to /usr/bin folder, so you don't need to navigate to motion/src folder anymore, you can run the commands without "./" on any place now.
 
 ### Testing
 
@@ -102,7 +122,7 @@ Please type in:
 
 `motion-cli getinfo`
 
-If you put wrong Privkey or VIPSIP>:PORT and get an error, you just need edit the .conf file with the correct data with:
+**IF** you put wrong Privkey or VIPSIP>:PORT and get an error, you just need edit the .conf file with the correct data with:
 
 `nano /root/.motioncore/motion.conf`
 
@@ -127,16 +147,17 @@ You need to wait for 15 confirmations in order to start the masternode- you can 
 
 `motion-cli getblockcount`
 
-(needs to be more than 0 to be in sync, at the moment of writing this guide we are at block 4883)
+(needs to be more than 0 to be in sync, at the moment of writing this guide we are at block 20000)
 
 **NOTE:** If the Masternode tab isn’t showing, you need to  click settings, check `Show Masternodes Tab` save, and restart the wallet.
 
 If your Masternode does not show, restart the wallet.
  
-Now Click `start-all`. Your masternode should be now up and running!
- 
+If it is your first, Click `start-all`. Your masternode should be now up and running!
+If this is another Masternode, Highlight the Masternode by clicking on it once, then click "Start Alias"
+
 ### Checking Your Masternode
-You can check the masternode status by going to the masternode wallet and typing:
+You can check the masternode status by Logging into the VPS and typing:
  
 `motion-cli masternode status`
  
