@@ -186,11 +186,11 @@ rm -rf ./motion-v*
 #Select OS architecture
     if [ `getconf LONG_BIT` = "64" ]
         then
-            DOWNLOADLINK=curl -s https://api.github.com/repos/motioncrypto/motion/releases/latest | grep browser_download_url | grep lin-64bits | cut -d '"' -f 4
+            DOWNLOADLINK=$(curl -s https://api.github.com/repos/motioncrypto/motion/releases/latest | grep browser_download_url | grep lin-64bits | cut -d '"' -f 4)
             wget $DOWNLOADLINK
             unzip motion-v*
     else
-        DOWNLOADLINK=curl -s https://api.github.com/repos/motioncrypto/motion/releases/latest | grep browser_download_url | grep lin-32bits | cut -d '"' -f 4
+        DOWNLOADLINK=$(curl -s https://api.github.com/repos/motioncrypto/motion/releases/latest | grep browser_download_url | grep lin-32bits | cut -d '"' -f 4)
         wget $DOWNLOADLINK
         unzip motion-v*
     fi
