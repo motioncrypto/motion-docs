@@ -33,6 +33,9 @@ fi
 # Check for systemd
 systemctl --version >/dev/null 2>&1 || { echo "systemd is required. Are you using Ubuntu 16.04 (Xenial)?"  >&2; exit 1; }
 
+sudo apt-get -y update
+sudo apt-get -y install curl
+
 # Gather input from user
 KEY=$1
 if [ "$KEY" == "" ]; then
@@ -103,7 +106,6 @@ if [ -n "$3" ]; then
     curl "https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=${DOCUMENTID}&step=3"
 fi
 sleep 3
-sudo apt-get -y update
 sudo apt-get -y upgrade
 
 # Install required packages
@@ -241,6 +243,9 @@ if [ -n "$3" ]; then
     curl "https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=${DOCUMENTID}&step=10"
 fi
 while [ $COUNTER -lt $TOTALBLOCKS ]; do
+    if [ -n "$3" ]; then
+        curl "https://us-central1-motion-masternode-installer.cloudfunctions.net/step?id=${DOCUMENTID}&step=10&syncedblocks=${COUNTER}"
+    fi
     echo The current progress is $COUNTER/$TOTALBLOCKS
     let COUNTER=$(motion-cli -datadir=/root/.motioncore getblockcount)
     sleep 5
